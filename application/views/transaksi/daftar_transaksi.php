@@ -58,18 +58,33 @@
                 </thead>
                 <tbody>
                     <?php $no = 1;
-                    foreach ($transaksi as $t) { ?>
+                    foreach ($transaksi as $transaksi) { ?>
                         <tr>
                             <td><?= $no++ ?></td>
-                            <td><?= date('d-m-Y H:i', strtotime($t->waktu)) ?></td> <!-- Mengakses properti objek -->
-                            <td><?= $t->nama_barang ?></td> <!-- Mengakses properti objek -->
-                            <td><?= ucfirst($t->jenis_transaksi) ?></td> <!-- Mengakses properti objek -->
-                            <td><?= $t->jumlah ?></td> <!-- Mengakses properti objek -->
-                            <td><?= $t->keterangan ?></td> <!-- Mengakses properti objek -->
+                            <td><?= date('d-m-Y H:i', strtotime($transaksi->waktu)) ?></td> <!-- Mengakses properti objek -->
+                            <td><?= $transaksi->nama_barang ?></td> <!-- Mengakses properti objek -->
+                            <td><?= ucfirst($transaksi->jenis_transaksi) ?></td> <!-- Mengakses properti objek -->
+                            <td><?= $transaksi->jumlah ?></td> <!-- Mengakses properti objek -->
+                            <td><?= $transaksi->keterangan ?></td> <!-- Mengakses properti objek -->
                             <td>
-                                <a href="<?= site_url('transaksi/edit/' . $t->id_transaksi) ?>"
+                                <?php if ($transaksi->jenis_transaksi === 'keluar'): ?>
+                                    <?php if ($transaksi->label_created): ?>
+                                        <a href="<?= site_url('shippinglabel/print_label/' . $transaksi->id_transaksi) ?>"
+                                            class="btn btn-success btn-sm" target="blank">
+                                            <i class="fas fa-check"></i> Lihat Shipping Label
+                                        </a>
+                                    <?php else: ?>
+                                        <a href="<?= site_url('shippinglabel/create?transaksi_id=' . $transaksi->id_transaksi) ?>"
+                                            class="btn btn-danger btn-sm">
+                                            <i class="fas fa-truck"></i> Buat Shipping Label
+                                        </a>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <a href="<?= site_url('transaksi/edit/' . $transaksi->id_transaksi) ?>"
                                     class="btn btn-warning btn-sm">Edit</a>
-                                <a href="<?= site_url('transaksi/hapus/' . $t->id_transaksi) ?>"
+                                <a href="<?= site_url('transaksi/hapus/' . $transaksi->id_transaksi) ?>"
                                     class="btn btn-danger btn-sm"
                                     onclick="return confirm('Yakin ingin menghapus transaksi ini?')">Hapus</a>
                             </td>

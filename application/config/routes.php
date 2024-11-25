@@ -53,18 +53,26 @@ $route['default_controller'] = 'login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['suratjalan/buat_surat_jalan/(:num)'] = 'SuratJalan/buat_surat_jalan/$1';
+//Route stok
 $route['stok/tambah_barang'] = 'Stok/tambah_barang';
 $route['stok/daftar_barang'] = 'stok/daftar_barang';
 $route['stok/update_barang/(:num)'] = 'stok/update_barang/$1';
 $route['stok/simpan_update_barang'] = 'stok/simpan_update_barang';
 $route['stok/hapus_barang/(:num)'] = 'stok/hapus_barang/$1';
+$route['stok/real'] = 'stok/stok_real';
+//Route Transaksi
 $route['transaksi/tambah'] = 'transaksi/tambah';
 $route['transaksi/simpan'] = 'transaksi/simpan';
 $route['transaksi/daftar'] = 'transaksi/daftar';
 $route['transaksi/hapus'] = 'transaksi/hapus';
-$route['stok/real'] = 'stok/stok_real';
 $route['transaksi/edit/(:num)'] = 'transaksi/edit/$1'; // Halaman edit
 $route['transaksi/update/(:num)'] = 'transaksi/update/$1'; // Aksi update
+//Route Shipping Label
+$route['shipping_label'] = 'shipping_label/index';
+$route['shipping_label/simpan'] = 'shipping_label/simpan';
+$route['shipping_label/laporan'] = 'shipping_label/laporan';
+$route['shipping_label/print_label/(:num)'] = 'shipping_label/print/$1';
+
 
 
 

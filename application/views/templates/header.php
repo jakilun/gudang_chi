@@ -64,7 +64,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= base_url('surat_jalan') ?>" class="nav-link">
+                    <a href="<?= base_url('shippinglabel/laporan') ?>" class="nav-link">
                         <i class="fas fa-file-alt"></i> Label Pengiriman
                     </a>
                 </li>

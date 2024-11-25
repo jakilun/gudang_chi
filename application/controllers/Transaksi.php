@@ -10,6 +10,7 @@ class Transaksi extends CI_Controller
         // Ganti dengan Stok_model
         $this->load->model('Stok_model');
         $this->load->model('Transaksi_model');
+        $this->load->model('ShippingLabel_model');
     }
 
     // Menampilkan form untuk menambah transaksi stok
@@ -76,7 +77,14 @@ class Transaksi extends CI_Controller
     $this->load->model('Transaksi_model');
     $data['barang'] = $this->Stok_model->get_all_barang();
     $data['transaksi'] = $this->Transaksi_model->filter_transaksi($id_barang, $tanggal_awal, $tanggal_akhir, $jenis_transaksi);
-
+    
+    // Tambahkan status shipping label untuk setiap transaksi
+    foreach ($data['transaksi'] as &$transaksi) {
+        $transaksi->label_created = $this->ShippingLabel_model->is_label_created($transaksi->id_transaksi);
+    }
+    if (empty($data['transaksi'])) {
+        $data['transaksi'] = []; // jika tidak ada data, gunakan array kosong
+    }
     $this->load->view('transaksi/daftar_transaksi', $data);
 
 }
