@@ -7,7 +7,7 @@
                     <h4>Edit Transaksi</h4>
                 </div>
                 <div class="card-body">
-                    <form action="<?= base_url('transaksi/update_transaksi/' . $transaksi->id_transaksi); ?>" method="post">
+                    <form action="<?= base_url('transaksi/update/' . $transaksi->id_transaksi); ?>" method="post">
                         <div class="form-group mb-3">
                             <label for="nama_barang" class="form-label">Nama Barang</label>
                             <select name="id_barang" id="nama_barang" class="form-select" required>
