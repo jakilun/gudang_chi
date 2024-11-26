@@ -20,7 +20,6 @@ class ShippingLabel extends CI_Controller {
         $transaksi_id = $this->input->get('transaksi_id');
         $data['id_transaksi'] = $transaksi_id; // Kirim variabel ke view
         $data['transaksi'] = $this->Transaksi_model->get_transaksi_by_id($transaksi_id);
-    
         $this->load->view('shipping_label/tambah', $data);
     }
     

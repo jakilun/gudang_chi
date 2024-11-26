@@ -78,10 +78,13 @@ class Transaksi extends CI_Controller
     $data['barang'] = $this->Stok_model->get_all_barang();
     $data['transaksi'] = $this->Transaksi_model->filter_transaksi($id_barang, $tanggal_awal, $tanggal_akhir, $jenis_transaksi);
     
-    // Tambahkan status shipping label untuk setiap transaksi
-    foreach ($data['transaksi'] as &$transaksi) {
+    foreach ($data['transaksi'] as $key => $transaksi) {
+        $shipping_label = $this->ShippingLabel_model->get_shipping_label_by_transaksi($transaksi->id_transaksi);
+        $data['transaksi'][$key]->id = $shipping_label ? $shipping_label->id : null;
         $transaksi->label_created = $this->ShippingLabel_model->is_label_created($transaksi->id_transaksi);
     }
+    // Tambahkan status shipping label untuk setiap transaksi
+
     if (empty($data['transaksi'])) {
         $data['transaksi'] = []; // jika tidak ada data, gunakan array kosong
     }

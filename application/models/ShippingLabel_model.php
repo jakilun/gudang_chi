@@ -45,4 +45,13 @@ class ShippingLabel_model extends CI_Model
         $this->db->delete('shipping_labels');
     }
 
+    public function get_shipping_label_by_transaksi($id_transaksi)
+{
+    $this->db->select('shipping_labels.id');
+    $this->db->from('shipping_labels');
+    $this->db->where('shipping_labels.id_transaksi', $id_transaksi);
+    $query = $this->db->get();
+    return $query->row();
+}
+
 }

@@ -69,7 +69,7 @@
                             <td>
                                 <?php if ($transaksi->jenis_transaksi === 'keluar'): ?>
                                     <?php if ($transaksi->label_created): ?>
-                                        <a href="<?= site_url('shippinglabel/print_label/' . $transaksi->id_transaksi) ?>"
+                                        <a href="<?= site_url('shippinglabel/print_label/' . $transaksi->id) ?>"
                                             class="btn btn-success btn-sm" target="blank">
                                             <i class="fas fa-check"></i> Lihat Shipping Label
                                         </a>
