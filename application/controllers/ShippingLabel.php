@@ -36,7 +36,6 @@ class ShippingLabel extends CI_Controller {
                 'telepon_penerima' => $this->input->post('telepon_penerima'),
                 'nama_pengirim' => $this->input->post('nama_pengirim'),
                 'telepon_pengirim' => $this->input->post('telepon_pengirim'),
-                'id_transaksi' => $this->input->post('id_transaksi')
             ];
             $this->ShippingLabel_model->simpan_label($data);
             redirect('shippinglabel/laporan');
@@ -52,14 +51,27 @@ class ShippingLabel extends CI_Controller {
     // Cetak label pengiriman
     public function print_label($id) {
         $this->load->model('ShippingLabel_model');
-    $data['label'] = $this->ShippingLabel_model->get_label_by_id($id);
-
-    if (!$data['label']) {
-        show_404();
+        $this->load->model('Transaksi_model');
+        $data['label'] = $this->ShippingLabel_model->get_label_by_id($id);
+    
+        if (!$data['label']) {
+            show_404();
+        }
+    
+        // Ambil barang terkait dengan shipping label
+        $data['barang'] = $this->ShippingLabel_model->get_barang_by_transaksi_master($data['label']->id_transaksi_master);
+    
+        // Hitung total berat
+        $total_berat = 0;
+        foreach ($data['barang'] as $barang) {
+            $total_berat += $barang->berat * $barang->jumlah; // Berat per barang * jumlah
+        }
+        $data['total_berat'] = $total_berat;
+    
+        // Tampilkan view untuk mencetak label
+        $this->load->view('shipping_label/print', $data);
     }
-
-    $this->load->view('shipping_label/print', $data);
-    }
+    
     public function get_suggestions() {
         $query = $this->input->get('term'); // Query dari AJAX
         $this->load->model('ShippingLabel_model');
@@ -128,7 +140,7 @@ class ShippingLabel extends CI_Controller {
                 'telepon_pengirim' => $this->input->post('telepon_pengirim'),
                 'id_transaksi' => $this->input->post('id_transaksi')
             ];
-    
+            
             // Simpan data shipping label ke database
             if ($this->ShippingLabel_model->create_shipping_label($data)) {
                 // Redirect atau beri notifikasi sukses

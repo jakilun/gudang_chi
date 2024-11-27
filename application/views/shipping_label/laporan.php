@@ -14,6 +14,8 @@
             <thead class="thead-dark">
                 <tr>
                     <th>No</th>
+                    <th>Waktu</th>
+                    <th>Kode Transaksi</th>
                     <th>Nama Penerima</th>
                     <th>Alamat</th>
                     <th>Nomor Telepon</th>
@@ -27,6 +29,8 @@
                 foreach ($labels as $label): ?>
                     <tr>
                         <td><?= $no++ ?></td>
+                        <td><?= $label->created_at ?></td>
+                        <td><?= $label->id_transaksi_master ?></td>
                         <td><?= $label->nama_penerima ?></td>
                         <td><?= $label->alamat_penerima ?></td>
                         <td><?= $label->telepon_penerima ?></td>

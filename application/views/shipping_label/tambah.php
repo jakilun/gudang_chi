@@ -1,32 +1,76 @@
 <?php $this->load->view('templates/header', ['title' => 'Buat Label Pengiriman']); ?>
-<?php var_dump($id_transaksi_master); ?>
 <div class="container mt-5">
-    <div class="container mt-5">
-        <h3>Tambah Label Pengiriman</h3>
-        <form action="<?= site_url('shippinglabel/create_by_transaksi_master/' . $id_transaksi_master) ?>" method="post">
-        <input type="hidden" name="id_transaksi" value="<?= $id_transaksi_master; ?>">        
-        <div class="mb-3">
-                <label for="nama_penerima" class="form-label">Nama Penerima</label>
-                <input type="text" class="form-control" id="nama_penerima" name="nama_penerima" required>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4>Form Shipping Label</h4>
+                </div>
+                <div class="card-body">
+                <form action="<?= site_url('shippinglabel/create_by_transaksi_master/' . $id_transaksi_master) ?>" method="post">
+                <input type="hidden" name="id_transaksi" value="<?= $id_transaksi_master; ?>">
+                    <!-- Data Pengirim dan Penerima -->
+                        <div class="mb-3">
+                            <label for="nama_penerima" class="form-label">Nama Penerima</label>
+                            <input type="text" class="form-control" name="nama_penerima" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="alamat_penerima" class="form-label">Alamat Penerima</label>
+                            <input type="text" class="form-control" name="alamat_penerima" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telepon_penerima" class="form-label">Telepon Penerima</label>
+                            <input type="text" class="form-control" name="telepon_penerima" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nama_pengirim" class="form-label">Nama Pengirim</label>
+                            <input type="text" class="form-control" name="nama_pengirim" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telepon_pengirim" class="form-label">Telepon Pengirim</label>
+                            <input type="text" class="form-control" name="telepon_pengirim" required>
+                        </div>
+
+                        <!-- Daftar Barang yang Dikirim -->
+                        <h5 class="mt-4">Barang yang Dikirim</h5>
+                        <table class="table table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Nama Barang</th>
+                                    <th>Jumlah</th>
+                                    <th>Berat (kg)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                $total_berat = 0;
+                                foreach ($barang_transaksi as $barang): 
+                                    $total_berat += $barang->berat * $barang->jumlah;
+                                ?>
+                                <tr>
+                                    <td><?= $barang->nama_barang ?></td>
+                                    <td><?= $barang->jumlah ?></td>
+                                    <td><?= number_format($barang->berat, 2) ?> kg</td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+
+                        <div class="d-flex justify-content-between mt-3">
+                            <h6>Total Berat: <?= number_format($total_berat, 2) ?> kg</h6>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-success">Buat Shipping Label</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="alamat_penerima" class="form-label">Alamat Penerima</label>
-                <textarea class="form-control" id="alamat_penerima" name="alamat_penerima" rows="3" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="telepon_penerima" class="form-label">Nomor Telepon Penerima</label>
-                <input type="text" class="form-control" id="telepon_penerima" name="telepon_penerima" required>
-            </div>
-            <div class="mb-3">
-                <label for="nama_pengirim" class="form-label">Nama Pengirim</label>
-                <input type="text" class="form-control" id="nama_pengirim" name="nama_pengirim" required>
-            </div>
-            <div class="mb-3">
-                <label for="telepon_pengirim" class="form-label">Nomor Telepon Pengirim</label>
-                <input type="text" class="form-control" id="telepon_pengirim" name="telepon_pengirim" required>
-            </div>
-            <button type="submit" class="btn btn-success">Buat Shipping Label</button>
-        </form>
+        </div>
+    </div>
+</div>
+</form>
+
 
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

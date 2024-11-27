@@ -56,7 +56,7 @@ class ShippingLabel_model extends CI_Model
 }
 
 public function get_barang_by_transaksi_master($id_transaksi_master) {
-    $this->db->select('barang.nama_barang, transaksi_stok.jumlah');
+    $this->db->select('barang.nama_barang, transaksi_stok.jumlah, barang.berat');
     $this->db->from('transaksi_stok');
     $this->db->join('barang', 'barang.id_barang = transaksi_stok.id_barang');
     $this->db->where('transaksi_stok.id_transaksi_master', $id_transaksi_master);
