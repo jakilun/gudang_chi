@@ -49,6 +49,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Kode Transaksi</th>
                         <th>Waktu</th>
                         <th>Nama Barang</th>
                         <th>Jenis Transaksi</th>
@@ -61,6 +62,7 @@
                     foreach ($transaksi as $transaksi) { ?>
                         <tr>
                             <td><?= $no++ ?></td>
+                            <td><?= $transaksi->id_transaksi_master ?></td>
                             <td><?= date('d-m-Y H:i', strtotime($transaksi->waktu)) ?></td> <!-- Mengakses properti objek -->
                             <td><?= $transaksi->nama_barang ?></td> <!-- Mengakses properti objek -->
                             <td><?= ucfirst($transaksi->jenis_transaksi) ?></td> <!-- Mengakses properti objek -->
@@ -74,10 +76,12 @@
                                             <i class="fas fa-check"></i> Lihat Shipping Label
                                         </a>
                                     <?php else: ?>
-                                        <a href="<?= site_url('shippinglabel/create?transaksi_id=' . $transaksi->id_transaksi) ?>"
-                                            class="btn btn-danger btn-sm">
-                                            <i class="fas fa-truck"></i> Buat Shipping Label
-                                        </a>
+                                        <a href="<?= site_url('shippinglabel/create_by_transaksi_master/' . $transaksi->id_transaksi_master) ?>"
+   class="btn btn-danger btn-sm">
+   <i class="fas fa-truck"></i> Buat Shipping Label
+</a>
+
+
                                     <?php endif; ?>
                                 <?php endif; ?>
                             </td>

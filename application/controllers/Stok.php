@@ -6,6 +6,8 @@ class Stok extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('Stok_model');
+        $this->load->model('Auth_model');
+        $this->Auth_model->check_login(); // Pastikan user sudah login
     }
 
     public function index() {

@@ -11,6 +11,8 @@ class Transaksi extends CI_Controller
         $this->load->model('Stok_model');
         $this->load->model('Transaksi_model');
         $this->load->model('ShippingLabel_model');
+        date_default_timezone_set('Asia/Jakarta');  // Sesuaikan dengan zona waktu yang diinginkan
+
     }
 
     // Menampilkan form untuk menambah transaksi stok
@@ -21,49 +23,43 @@ class Transaksi extends CI_Controller
     }
 
     // Menyimpan transaksi stok (masuk/keluar)
-    public function simpan()
-    {
-        $data = [
-            'id_barang' => $this->input->post('id_barang'),
+    public function simpan() {
+        $this->load->model('Transaksi_model');
+    
+        // Data master transaksi
+        $transaksi_master = [
             'jenis_transaksi' => $this->input->post('jenis_transaksi'),
-            'jumlah' => $this->input->post('jumlah'),
             'keterangan' => $this->input->post('keterangan'),
-            'waktu' => date('Y-m-d H:i:s'), // Pastikan format ini digunakan
+            'waktu' => date('Y-m-d H:i:s'),
         ];
-        // Simpan data transaksi ke database
-        if ($this->Transaksi_model->tambah_transaksi($data)) {
-            // Redirect ke daftar transaksi atau halaman sukses
-            redirect('transaksi/daftar');
-        } else {
-            // Tampilkan pesan error jika gagal
-            echo "Gagal menyimpan transaksi!";
+    
+        // Simpan transaksi utama dan dapatkan ID-nya
+        $id_transaksi_master = $this->Transaksi_model->simpan_transaksi_master($transaksi_master);
+    
+        // Data barang untuk transaksi ini
+        $barang_transaksi = [];
+        $id_barang = $this->input->post('id_barang'); // Array dari form
+        $jumlah = $this->input->post('jumlah'); // Array dari form
+    
+        foreach ($id_barang as $key => $barang_id) {
+            $barang_transaksi[] = [
+                'id_transaksi_master' => $id_transaksi_master,
+                'id_barang' => $barang_id,
+                'jumlah' => $jumlah[$key],
+                'keterangan' => $this->input->post('keterangan'),
+                'jenis_transaksi' => $this->input->post('jenis_transaksi'),
+                'waktu' => date('Y-m-d H:i:s'),
+            ];
         }
+    
+        // Simpan semua barang terkait transaksi
+        $this->Transaksi_model->simpan_barang_transaksi($barang_transaksi);
+    
+        redirect('transaksi/daftar');
     }
+    
 
-    // Menampilkan daftar transaksi stok
-    //public function daftar()
-    //{
-    //    $data['transaksi'] = $this->Transaksi_model->get_all_transaksi();
-
-        // Ambil data filter dari query string
-    //    $filter = array(
-    //        'id_barang' => $this->input->get('id_barang'),
-    //        'waktu' => $this->input->get('waktu')
-    //    );
-
-        // Ambil data barang untuk dropdown filter
-    //    $data['barang'] = $this->Stok_model->get_all_barang();
-
-        // Ambil data transaksi dengan filter
-    //    $data['transaksi'] = $this->Transaksi_model->get_transaksi_filtered($filter);
-
-    //    // Kirim data ke view
-    //    $data['filter'] = $filter;  // Untuk mengingatkan pilihan filter yang sudah dipilih
-
-    //    $this->load->view('transaksi/daftar_transaksi', $data);
-
-        
-    //}
+    
     public function daftar()
 {
     $id_barang = $this->input->get('id_barang');
@@ -79,9 +75,9 @@ class Transaksi extends CI_Controller
     $data['transaksi'] = $this->Transaksi_model->filter_transaksi($id_barang, $tanggal_awal, $tanggal_akhir, $jenis_transaksi);
     
     foreach ($data['transaksi'] as $key => $transaksi) {
-        $shipping_label = $this->ShippingLabel_model->get_shipping_label_by_transaksi($transaksi->id_transaksi);
+        $shipping_label = $this->ShippingLabel_model->get_shipping_label_by_transaksi_master($transaksi->id_transaksi_master);
         $data['transaksi'][$key]->id = $shipping_label ? $shipping_label->id : null;
-        $transaksi->label_created = $this->ShippingLabel_model->is_label_created($transaksi->id_transaksi);
+        $transaksi->label_created = $this->ShippingLabel_model->is_label_created($transaksi->id_transaksi_master);
     }
     // Tambahkan status shipping label untuk setiap transaksi
 

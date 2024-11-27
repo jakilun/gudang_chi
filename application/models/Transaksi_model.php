@@ -95,5 +95,17 @@ class Transaksi_model extends CI_Model
     return $query->row();
 }
 
+public function simpan_transaksi_master($data) {
+    $this->db->insert('transaksi_master', $data);
+    return $this->db->insert_id(); // Kembalikan ID transaksi yang baru dibuat
+}
+
+public function simpan_barang_transaksi($data) {
+    $this->db->insert_batch('transaksi_stok', $data); // Simpan beberapa barang sekaligus
+}
+
+public function get_transaksi_master($id_transaksi_master) {
+    return $this->db->get_where('transaksi_master', ['id_transaksi_master' => $id_transaksi_master])->row();
+}
 
 }

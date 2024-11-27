@@ -68,10 +68,12 @@ $route['transaksi/hapus'] = 'transaksi/hapus';
 $route['transaksi/edit/(:num)'] = 'transaksi/edit/$1'; // Halaman edit
 $route['transaksi/update/(:num)'] = 'transaksi/update/$1'; // Aksi update
 //Route Shipping Label
-$route['shipping_label'] = 'shipping_label/index';
+$route['shippinglabel'] = 'shipping_label/index';
 $route['shipping_label/simpan'] = 'shipping_label/simpan';
 $route['shipping_label/laporan'] = 'shipping_label/laporan';
 $route['shipping_label/print_label/(:num)'] = 'shipping_label/print/$1';
+$route['shippinglabel/create_by_transaksi_master/(:num)'] = 'shippinglabel/create_by_transaksi_master/$1';
+
 
 
 
